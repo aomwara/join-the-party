@@ -23,7 +23,7 @@ export class Party {
   image: string;
 
   @prop({ required: true })
-  amount: string;
+  amount: number;
 }
 
 const partyModel = getModelForClass(Party);

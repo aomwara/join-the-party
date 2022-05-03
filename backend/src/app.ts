@@ -57,6 +57,5 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 const port = config.get<number>("port");
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);
-  // 👇 call the connectDB function here
   connectDB();
 });
