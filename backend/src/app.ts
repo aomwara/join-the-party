@@ -4,11 +4,28 @@ import morgan from "morgan";
 import config from "config";
 import cookieParser from "cookie-parser";
 import connectDB from "./utils/connectDB";
+const cors = require("cors");
 
 import userRouter from "./routes/user.route";
 import partyRouter from "./routes/party.route";
 
+var allowedOrigins = ["http://localhost:3000"];
+
 const app = express();
+app.use(
+  cors({
+    origin: function (origin: any, callback: any) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // Middleware
 

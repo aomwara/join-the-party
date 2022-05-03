@@ -1,26 +1,27 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider as ReduxProvider } from "react-redux";
-import { useRouter } from "next/router";
+import { AuthProvider } from "../contexts/AuthContext";
 import store from "../store";
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const Router = useRouter();
+import { useRouter } from "next/router";
 
-  if (Router.pathname === "/auth/login") {
+const App: React.FC<any> = ({ Component, pageProps }) => {
+  const Router = useRouter();
+  //Define Unprotected Routes
+  const unProtectedRoutes = ["/auth/signin", "/auth/signup"];
+
+  if (unProtectedRoutes.includes(Router.pathname)) {
     return (
       <ReduxProvider store={store}>
-        {/* <Navbar /> */}
         <Component {...pageProps} />
       </ReduxProvider>
     );
   } else {
     return (
       <ReduxProvider store={store}>
-        {/* <AuthProvider> */}
-        {/* <Navbar /> */}
-        <Component {...pageProps} />
-        {/* </AuthProvider> */}
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ReduxProvider>
     );
   }

@@ -99,6 +99,7 @@ export const loginHandler = async (
     res.status(200).json({
       status: "success",
       access_token,
+      data: { name: user.name, email: user.email },
     });
   } catch (err: any) {
     next(err);
@@ -181,6 +182,41 @@ export const logoutHandler = async (
     await redisClient.del(user._id);
     logout(res);
     return res.redirect(`${config.get<string>("origin")}/login`);
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const authCheckHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = res.locals.user;
+    if (user) {
+      res.status(200).json({
+        status: true,
+      });
+    }
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getProfileHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = res.locals.user;
+    if (user) {
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+      });
+    }
   } catch (err: any) {
     next(err);
   }

@@ -16,8 +16,7 @@ import {
   Container,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Copyright from "../../components/Utils/Copyright";
-
+import Copyright from "../../components/Copyright";
 import LinkNext from "next/link";
 
 const theme = createTheme();
@@ -29,34 +28,26 @@ const Signin = () => {
   const { loading, isLogin, token } = useAppSelector((state) => state.auth);
   const Router = useRouter();
 
-  //   const login = () => {
-  //     const credential: Credential = {
-  //       username: username,
-  //       password: password,
-  //     };
-  //     dispatch(Login(credential));
-  //   };
-
-  //   useEffect(() => {
-  //     if (!loading && isLogin && token) {
-  //       localStorage.setItem("_token", token);
-  //       Router.push("/");
-  //     }
-  //   }, [loading, isLogin, Router, token]);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const login = () => {
+    const credential: Credential = {
+      email: username,
+      password: password,
+    };
+    dispatch(Login(credential));
   };
+
+  useEffect(() => {
+    if (!loading && isLogin && token) {
+      console.log(token);
+      localStorage.setItem("_token", token);
+      Router.push("/");
+    }
+  }, [loading, isLogin, Router, token]);
 
   return (
     <>
       <Head>
-        <title>Party Hub | Login</title>
+        <title>Party Hub!</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
@@ -74,12 +65,7 @@ const Signin = () => {
             <Typography component="h1" variant="h5">
               <b>Party Hub</b>
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -89,6 +75,9 @@ const Signin = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
               />
               <TextField
                 margin="normal"
@@ -99,6 +88,9 @@ const Signin = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
 
               <Button
@@ -106,10 +98,13 @@ const Signin = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => {
+                  login();
+                }}
               >
                 เข้าสู่ระบบ
               </Button>
-              <LinkNext href="/auth/register" passHref>
+              <LinkNext href="/auth/signup" passHref>
                 <Button
                   type="submit"
                   fullWidth

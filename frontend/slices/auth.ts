@@ -21,8 +21,8 @@ interface AuthCheck {
 }
 
 interface authData {
-  status: number;
-  token: string;
+  status: string;
+  access_token: string;
   data: UserProfile;
 }
 
@@ -42,7 +42,7 @@ export const Login = createAsyncThunk(
         `${apiHost.default}${apiEndpoints.section.auth.login}`,
         credential
       );
-      localStorage.setItem("_token", response.data);
+      localStorage.setItem("_token", response.data.access_token);
       return response.data;
     } catch (err) {
       localStorage.setItem("_token", "");
@@ -110,8 +110,9 @@ const authSlice = createSlice({
       })
       .addCase(Login.fulfilled, (state, action: PayloadAction<authData>) => {
         if (state.loading === true) {
-          if (action.payload.status === 200) {
-            state.token = action.payload.token;
+          if (action.payload.status === "success") {
+            console.log(action.payload);
+            state.token = action.payload.access_token;
             state.isLogin = true;
             state.userData = action.payload.data;
           } else {

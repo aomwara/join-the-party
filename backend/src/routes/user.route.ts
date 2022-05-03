@@ -4,6 +4,8 @@ import {
   logoutHandler,
   refreshAccessTokenHandler,
   registerHandler,
+  authCheckHandler,
+  getProfileHandler,
 } from "../controllers/auth.controller";
 import {
   getAllUsersHandler,
@@ -27,6 +29,12 @@ router.post("/login", validate(loginUserSchema), loginHandler);
 router.get("/refresh", refreshAccessTokenHandler);
 
 router.use(deserializeUser, requireUser);
+
+// Auth Check
+router.get("/check", authCheckHandler);
+
+// Get profile
+router.get("/profile", getProfileHandler);
 
 // Logout User
 router.get("/logout", logoutHandler);

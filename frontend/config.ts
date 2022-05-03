@@ -5,11 +5,12 @@ export const environment = process.env.NEXT_PUBLIC_UI_ENV
 export const apiEndpoints = {
   section: {
     auth: {
-      login: "/api/login",
-      check: "/api/auth/check",
+      login: "/api/users/login",
+      register: "/api/users/register",
+      check: "/api/users/check",
     },
     user: {
-      profile: "/api/user/profile",
+      profile: "/api/users/profile",
     },
   },
 };
@@ -17,11 +18,11 @@ export const apiEndpoints = {
 const AR_API = () => {
   switch (environment) {
     case "development":
-      return "http://localhost:8888";
+      return "http://localhost:8000";
     case "production":
-      return "https://aradmission.kmutt.ac.th";
+      return "";
     default:
-      return "https://aradmission.kmutt.ac.th";
+      return "http://localhost:8000";
   }
 };
 

@@ -14,7 +14,7 @@ import {
   Container,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Copyright from "../../components/Utils/Copyright";
+import Copyright from "../../components/Copyright";
 
 const theme = createTheme();
 
