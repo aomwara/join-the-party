@@ -14,6 +14,8 @@ import {
   Box,
   Typography,
   Container,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "../../components/Copyright";
@@ -24,9 +26,23 @@ const theme = createTheme();
 const Signin = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { loading, isLogin, token } = useAppSelector((state) => state.auth);
+  const { loading, isLogin, token, hasError, msgError } = useAppSelector(
+    (state) => state.auth
+  );
   const Router = useRouter();
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const login = () => {
     const credential: Credential = {
@@ -38,11 +54,16 @@ const Signin = () => {
 
   useEffect(() => {
     if (!loading && isLogin && token) {
-      console.log(token);
       localStorage.setItem("_token", token);
       Router.push("/");
     }
   }, [loading, isLogin, Router, token]);
+
+  useEffect(() => {
+    if (msgError || msgError === undefined || hasError) {
+      setOpen(true);
+    }
+  }, [msgError, hasError]);
 
   return (
     <>
@@ -55,7 +76,7 @@ const Signin = () => {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 10,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -98,15 +119,13 @@ const Signin = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  login();
-                }}
+                onClick={login}
               >
                 เข้าสู่ระบบ
               </Button>
               <LinkNext href="/auth/signup" passHref>
                 <Button
-                  type="submit"
+                  type="button"
                   fullWidth
                   variant="outlined"
                   sx={{ mt: 1, mb: 2 }}
@@ -118,6 +137,16 @@ const Signin = () => {
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={open}
+          autoHideDuration={1500}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            {msgError ? msgError : "Something went wrong"}
+          </Alert>
+        </Snackbar>
       </ThemeProvider>
     </>
   );

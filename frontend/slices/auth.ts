@@ -24,11 +24,13 @@ interface authData {
   status: string;
   access_token: string;
   data: UserProfile;
+  message?: string;
 }
 
 const initialState: AuthState = {
   loading: false,
   hasError: false,
+  msgError: "",
   token: "",
   isLogin: false,
   userData: {},
@@ -44,9 +46,9 @@ export const Login = createAsyncThunk(
       );
       localStorage.setItem("_token", response.data.access_token);
       return response.data;
-    } catch (err) {
+    } catch (err: any) {
       localStorage.setItem("_token", "");
-      return "";
+      return err.response.data;
     }
   }
 );
@@ -106,22 +108,30 @@ const authSlice = createSlice({
       .addCase(Login.pending, (state) => {
         if (state.loading === false) {
           state.loading = true;
+          state.hasError = false;
+          state.msgError = "";
         }
       })
       .addCase(Login.fulfilled, (state, action: PayloadAction<authData>) => {
-        if (state.loading === true) {
-          if (action.payload.status === "success") {
-            console.log(action.payload);
-            state.token = action.payload.access_token;
-            state.isLogin = true;
-            state.userData = action.payload.data;
-          } else {
+        if (action.payload) {
+          if (state.loading === true) {
+            if (action.payload.status === "success") {
+              console.log(action.payload);
+              state.token = action.payload.access_token;
+              state.isLogin = true;
+              state.userData = action.payload.data;
+            } else {
+              state.loading = false;
+              state.hasError = true;
+              state.msgError = action.payload.message;
+            }
+            state.loading = false;
+            state.hasError = false;
           }
-          state.loading = false;
-          state.hasError = false;
         }
       })
       .addCase(Login.rejected, (state) => {
+        console.log("haserror");
         state.loading = false;
         state.hasError = true;
       });
