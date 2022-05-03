@@ -4,7 +4,9 @@ import morgan from "morgan";
 import config from "config";
 import cookieParser from "cookie-parser";
 import connectDB from "./utils/connectDB";
+
 import userRouter from "./routes/user.route";
+import partyRouter from "./routes/party.route";
 
 const app = express();
 
@@ -21,6 +23,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 // Routes
 app.use("/api/users", userRouter);
+app.use("/api/party", partyRouter);
 
 // Testing
 app.get(
