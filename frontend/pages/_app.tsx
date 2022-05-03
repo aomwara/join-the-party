@@ -1,15 +1,28 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import Navbar from "../components/Utils/Navbar";
+import { Provider as ReduxProvider } from "react-redux";
+import { useRouter } from "next/router";
+import store from "../store";
 
-const App = ({ Component, pageProps }: AppProps) => {
-  return (
-    <ChakraProvider>
-      <Navbar />
-      <Component {...pageProps} />
-    </ChakraProvider>
-  );
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const Router = useRouter();
+
+  if (Router.pathname === "/auth/login") {
+    return (
+      <ReduxProvider store={store}>
+        {/* <Navbar /> */}
+        <Component {...pageProps} />
+      </ReduxProvider>
+    );
+  } else {
+    return (
+      <ReduxProvider store={store}>
+        {/* <AuthProvider> */}
+        {/* <Navbar /> */}
+        <Component {...pageProps} />
+        {/* </AuthProvider> */}
+      </ReduxProvider>
+    );
+  }
 };
-
 export default App;
