@@ -28,7 +28,7 @@ export const joinHandler = async (
     } else {
       res.status(400).json({
         status: "fail",
-        message: "You have already joined this party",
+        message: "You have already joined this party or Party full",
       });
     }
   } catch (err: any) {

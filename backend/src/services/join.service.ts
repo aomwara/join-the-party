@@ -24,6 +24,11 @@ export const checkJoin = async (input: Join) => {
     userID: input.userID,
   });
 
+  const party: Party | null = await partyModel.findById(input.partyID);
+  if (party?.amount === 0) {
+    return null;
+  }
+
   return join;
 };
 
