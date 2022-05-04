@@ -8,6 +8,7 @@ const cors = require("cors");
 
 import userRouter from "./routes/user.route";
 import partyRouter from "./routes/party.route";
+import joinRouter from "./routes/join.route";
 
 var allowedOrigins = ["http://localhost:3000"];
 
@@ -41,6 +42,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/party", partyRouter);
+app.use("/api/join", joinRouter);
 
 // Testing
 app.get(

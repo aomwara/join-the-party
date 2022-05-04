@@ -3,10 +3,7 @@ import { object, string, TypeOf, number } from "zod";
 export const createPartySchema = object({
   body: object({
     name: string({ required_error: "Name is required" }),
-    // organizer: string({ required_error: "Email is required" }).email(
-    //   "Invalid email"
-    // ),
-    date: string({ required_error: "Name is required" }),
+    date: string({ required_error: "date is required" }),
     description: string({ required_error: "description is required" }),
     image: string({ required_error: "image is required" }),
     amount: number({ required_error: "amount is required" }),
