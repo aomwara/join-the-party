@@ -47,20 +47,3 @@ export const getMeJoin = async (input: Partial<Join>) => {
 
   return parties;
 };
-
-// // Find All party
-// export const findAllParty = async () => {
-//   return await partyModel.find();
-// };
-
-// // Find party by id
-// export const findPartyById = async (id: string) => {
-//   const user = await partyModel.findById(id).lean();
-//   return omit(user);
-// };
-
-// // Find party by organizer
-// export const findPartyByOrganizer = async (organizer: string) => {
-//   const party = await partyModel.find({ email: organizer }).lean();
-//   return omit(party);
-// };
