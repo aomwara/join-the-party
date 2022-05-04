@@ -12,6 +12,9 @@ export const apiEndpoints = {
     user: {
       profile: "/api/users/profile",
     },
+    party: {
+      getAll: "/api/party",
+    },
   },
 };
 

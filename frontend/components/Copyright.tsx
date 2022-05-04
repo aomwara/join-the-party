@@ -9,7 +9,7 @@ const Copyright = (props: any) => {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="http://localhost:3000">
         Party Hub
       </Link>{" "}
       {new Date().getFullYear()}
