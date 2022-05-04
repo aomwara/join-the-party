@@ -1,4 +1,3 @@
-import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
 import { AuthProvider } from "../contexts/AuthContext";

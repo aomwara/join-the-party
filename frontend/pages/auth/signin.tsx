@@ -18,6 +18,7 @@ import {
   Alert,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { setRegisterState } from "../../slices/register";
 import Copyright from "../../components/Copyright";
 import LinkNext from "next/link";
 
@@ -64,6 +65,10 @@ const Signin = () => {
       setOpen(true);
     }
   }, [msgError, hasError]);
+
+  useEffect(() => {
+    dispatch(setRegisterState(false));
+  }, [dispatch]);
 
   return (
     <>
