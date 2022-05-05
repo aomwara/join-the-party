@@ -27,11 +27,11 @@ export const apiEndpoints = {
 const AR_API = () => {
   switch (environment) {
     case "development":
-      return "http://localhost:8000";
+      return "https://api-party.aom.engineer";
     case "production":
       return "";
     default:
-      return "http://localhost:8000";
+      return "https://api-party.aom.engineer";
   }
 };
 
