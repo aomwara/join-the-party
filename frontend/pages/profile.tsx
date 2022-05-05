@@ -1,19 +1,9 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Head from "next/head";
+import { Typography, CssBaseline, Box, Container } from "@mui/material";
 import useAppSelector from "../hooks/useAppSelector";
 
-import axios from "axios";
-import Header from "next/head";
-
-import { Heading, Box, Text, Container, Divider } from "@chakra-ui/react";
-
-interface Profile {
-  userId: string;
-  pictureUrl: string;
-  displayName: string;
-}
-const Home = () => {
+const Profile = () => {
   const [profile, setProfile] = useState<any>();
   const { userData } = useAppSelector((state) => state.auth);
 
@@ -29,18 +19,24 @@ const Home = () => {
         <title>Party Hub</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container style={{ paddingTop: 20 }} maxW="container.xl">
-        <Heading>My Profile</Heading>
-        <Divider style={{ paddingTop: 20 }}></Divider>
+
+      <Typography align="center" pb={4} pt={10} variant="h4" component="h4">
+        ข้อมูลส่วนตัว
+      </Typography>
+
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
 
         <Box style={{ padding: 40 }}>
           {profile && (
             <>
-              <Text>
-                ชื่อ:
+              <Typography>
+                <b> ชื่อ: </b>
                 {profile.name}
-              </Text>
-              <Text>อีเมล: {profile.email}</Text>
+              </Typography>
+              <Typography>
+                <b>อีเมล:</b> {profile.email}
+              </Typography>
             </>
           )}
         </Box>
@@ -49,4 +45,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Profile;

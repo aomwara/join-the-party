@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState, useCallback, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 import {
   Card,
@@ -13,15 +15,16 @@ import {
   CardActions,
 } from "@mui/material";
 
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-
 import { Party } from "../interfaces/Party";
 import { getAllParty } from "../slices/party";
 
 import useAppSelector from "../hooks/useAppSelector";
+import { joinParty } from "../slices/join";
+import { JoinInput } from "../interfaces/JoinInput";
 
 const Home = () => {
-  const { token } = useAppSelector((state) => state.auth);
+  const Router = useRouter();
+  const { token, userData } = useAppSelector((state) => state.auth);
   const [parties, setParties] = useState<Party[]>();
 
   const getParties = useCallback(async () => {
@@ -35,15 +38,44 @@ const Home = () => {
     }
   }, [getParties, token]);
 
+  const handleJoinParty = async (_id: string) => {
+    Swal.fire({
+      title: "คุณต้องการเข้าร่วมปาร์ตี้นี้ใช่หรือไม่",
+      showDenyButton: true,
+      confirmButtonText: "เข้าร่วม",
+      denyButtonText: `ขอคิดอีกที`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const joinInput: JoinInput = {
+          partyID: _id,
+          token: token,
+        };
+
+        const resp = await joinParty(joinInput);
+        if (resp && resp.status === "success") {
+          Swal.fire("เข้าร่วมสำเร็จ", "", "success");
+        } else {
+          Swal.fire({
+            title: "คุณเข้าร่วมปาร์ตี้นี้แล้ว",
+            showCancelButton: true,
+            confirmButtonText: "ดูปาร์ตี้ที่เข้าร่วม",
+            cancelButtonText: "ปิด",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Router.push(`/party/me`);
+            }
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <Head>
         <title>Party Hub!</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Button variant="contained" startIcon={<AddCircleOutlineIcon />}>
-        สร้างปาร์ตี้
-      </Button>
 
       <Grid
         container
@@ -60,7 +92,11 @@ const Home = () => {
                   image={party.image}
                   alt={party.name}
                 />
-                <CardContent>
+                <CardContent
+                  onClick={() => {
+                    Router.push(`/party/id/${party._id}`);
+                  }}
+                >
                   <Typography gutterBottom variant="h5" component="div">
                     {party.name}
                   </Typography>
@@ -77,9 +113,21 @@ const Home = () => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
-                  เข้าร่วม
-                </Button>
+                {userData && (
+                  <Button
+                    onClick={() => {
+                      handleJoinParty(party._id);
+                    }}
+                    type="button"
+                    variant="contained"
+                    fullWidth
+                    disabled={userData.email === party.organizer}
+                  >
+                    {userData.email === party.organizer
+                      ? "คุณเป็นผู้จัด"
+                      : "เข้าร่วม"}
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Grid>

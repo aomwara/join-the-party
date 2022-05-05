@@ -33,12 +33,7 @@ export const getPartyByIdHandler = async (
   try {
     const id = req.params.id;
     const party = await findPartyById(id);
-    res.status(200).json({
-      status: "success",
-      data: {
-        party,
-      },
-    });
+    res.status(200).json(party);
   } catch (err: any) {
     next(err);
   }
@@ -60,12 +55,7 @@ export const createPartyHandler = async (
       amount: req.body.amount,
     });
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        party,
-      },
-    });
+    res.status(201).json(party);
   } catch (err: any) {
     next(err);
   }

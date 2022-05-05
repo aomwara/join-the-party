@@ -23,6 +23,7 @@ import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import MenuList from "../constants/Menu";
+import { Logout } from "../slices/auth";
 
 const drawerWidth = 240;
 
@@ -87,6 +88,11 @@ const PersistentDrawerLeft: React.FC = ({ children }) => {
     setOpen(false);
   };
 
+  const handleLogout = () => {
+    Logout();
+    window.location.href = "/auth/signin";
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -145,7 +151,12 @@ const PersistentDrawerLeft: React.FC = ({ children }) => {
         </List>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem
+            button
+            onClick={() => {
+              handleLogout();
+            }}
+          >
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>

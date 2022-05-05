@@ -14,6 +14,12 @@ export const apiEndpoints = {
     },
     party: {
       getAll: "/api/party",
+      getById: "/api/party",
+      create: "/api/party",
+    },
+    join: {
+      join: "/api/join",
+      getMeJoin: "/api/join/me",
     },
   },
 };

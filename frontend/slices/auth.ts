@@ -8,7 +8,7 @@ import { UserProfile } from "../interfaces/UserProfile";
 interface AuthState extends DetaultState {
   token: string;
   isLogin: boolean;
-  userData: {};
+  userData: UserProfile | null;
 }
 
 interface setAuth {
@@ -33,7 +33,7 @@ const initialState: AuthState = {
   msgError: "",
   token: "",
   isLogin: false,
-  userData: {},
+  userData: null,
 };
 
 export const Login = createAsyncThunk(
@@ -52,6 +52,14 @@ export const Login = createAsyncThunk(
     }
   }
 );
+
+export const Logout = async () => {
+  try {
+    localStorage.removeItem("_token");
+  } catch (err) {
+    console.log("Logout Failed");
+  }
+};
 
 export const authCheck = async (token: string): Promise<AuthCheck> => {
   try {
@@ -116,7 +124,6 @@ const authSlice = createSlice({
         if (action.payload) {
           if (state.loading === true) {
             if (action.payload.status === "success") {
-              console.log(action.payload);
               state.token = action.payload.access_token;
               state.isLogin = true;
               state.userData = action.payload.data;
