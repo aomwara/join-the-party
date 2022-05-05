@@ -44,17 +44,6 @@ app.use("/api/users", userRouter);
 app.use("/api/party", partyRouter);
 app.use("/api/join", joinRouter);
 
-// Testing
-app.get(
-  "/api/healthChecker",
-  (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({
-      status: "success",
-      message: "Welcome to CodevoWeb😂😂👈👈",
-    });
-  }
-);
-
 // UnKnown Routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any;
