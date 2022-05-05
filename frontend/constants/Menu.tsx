@@ -14,11 +14,11 @@ const MenuList = [
     icon: <UserIcon />,
     href: "/profile",
   },
-  // {
-  //   label: "ปาร์ตี้ของฉัน",
-  //   icon: <CelebrationIcon />,
-  //   href: "/profile/party",
-  // },
+  {
+    label: "ปาร์ตี้ที่เข้าร่วม",
+    icon: <CelebrationIcon />,
+    href: "/party/me",
+  },
   {
     label: "สร้างปาร์ตี้",
     icon: <AddIcon />,
